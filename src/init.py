@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 
 app = FastAPI()
 
@@ -24,3 +25,10 @@ def div(num1,num2):
 def multiplicacion(num1,num2):
     resultado = int(num1) * int(num2)
     return{resultado}
+
+client = TestClient(app)
+
+def test_suma():
+    response = client.get("/mul",headers={"num1":2,"num2":3})
+    assert response.status_code == 200
+    assert response.json() == [6]
